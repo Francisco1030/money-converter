@@ -30,6 +30,11 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+
+  final realController = TextEditingController();
+  final dolarController = TextEditingController();
+  final euroController = TextEditingController();
+
   double dolar;
   double euro;
 
@@ -73,11 +78,11 @@ class _HomeState extends State<Home> {
                     children: <Widget>[
                       Icon(Icons.monetization_on,
                           size: 150.0, color: Colors.amber),
-                      buildTextField("Reais", "R\$ "),
+                      buildTextField("Reais", "R\$ ", realController),
                       Divider(),
-                      buildTextField("Dólares", "U\$ "),
+                      buildTextField("Dólares", "U\$ ", dolarController),
                       Divider(),
-                      buildTextField("Euros", "€ "),
+                      buildTextField("Euros", "€ ", euroController),
                     ],
                   ),
                 );
@@ -89,9 +94,10 @@ class _HomeState extends State<Home> {
   }
 }
 
-Widget buildTextField(String label, String prefix) {
+Widget buildTextField(String label, String prefix, TextEditingController controller) {
   return TextField(
     keyboardType: TextInputType.number,
+    controller: controller,
     decoration: InputDecoration(
         labelText: label,
         labelStyle: TextStyle(color: Colors.amber),
