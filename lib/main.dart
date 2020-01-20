@@ -30,13 +30,30 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-
   final realController = TextEditingController();
   final dolarController = TextEditingController();
   final euroController = TextEditingController();
 
   double dolar;
   double euro;
+
+  void _realChanged(String text) {
+    double real = double.parse(text);
+    dolarController.text = (real/dolar).toStringAsFixed(2);
+    euroController.text = (real/euro).toStringAsFixed(2);
+  }
+
+  void _dolarChanged(String text) {
+    double dolar = double.parse(text);
+    realController.text = (dolar * this.dolar).toStringAsFixed(2);
+    euroController.text = (dolar * this.dolar /euro).toStringAsFixed(2);
+  }
+
+  void _euroChanged(String text) {
+    double euro = double.parse(text);
+    realController.text = realController.text = (euro * this.euro).toStringAsFixed(2);
+    dolarController.text = (euro * this.euro /dolar).toStringAsFixed(2);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -78,11 +95,11 @@ class _HomeState extends State<Home> {
                     children: <Widget>[
                       Icon(Icons.monetization_on,
                           size: 150.0, color: Colors.amber),
-                      buildTextField("Reais", "R\$ ", realController),
+                      buildTextField("Reais", "R\$ ", realController, _realChanged),
                       Divider(),
-                      buildTextField("Dólares", "U\$ ", dolarController),
+                      buildTextField("Dólares", "U\$ ", dolarController, _dolarChanged),
                       Divider(),
-                      buildTextField("Euros", "€ ", euroController),
+                      buildTextField("Euros", "€ ", euroController, _euroChanged),
                     ],
                   ),
                 );
@@ -94,7 +111,8 @@ class _HomeState extends State<Home> {
   }
 }
 
-Widget buildTextField(String label, String prefix, TextEditingController controller) {
+Widget buildTextField(
+    String label, String prefix, TextEditingController controller, Function function) {
   return TextField(
     keyboardType: TextInputType.number,
     controller: controller,
@@ -104,5 +122,6 @@ Widget buildTextField(String label, String prefix, TextEditingController control
         border: OutlineInputBorder(),
         prefixText: prefix),
     style: TextStyle(color: Colors.amber, fontSize: 25.0),
+    onChanged: function,
   );
 }
